@@ -143,6 +143,19 @@ def symlinks_check():
              # questo proprio solo per puntiglio...
              outline=outline.replace('dangling:','DANGLING')
              logger.warn(outline) 
+             logger.info("Check if target is still in catalogue...")
+             outline_split=outline.split(" ")
+             path=outline_split[-3]  
+             lfn = path.replace(watched_dir,"")
+             target=query_catalog(lfn)
+             if "NULL" in target:
+                logger.info("Target not in catalogue. Removing link...")
+                try:
+                   os.remove(path)
+                except:
+                   logger.error("Could not remove link!")    
+             else:
+                logger.error("Target not in local SE, but still in catalogue!") 
     except:
        logger.error("Error in running Linux symlinks!")
 
@@ -150,10 +163,20 @@ def symlinks_check():
 def query_catalog(lfn):
     # function to check if given file is supposed to be in the local SE
     retval="NULL"
-    # get token, shoud be done with passwordless certificate
-    # (or however it is done by the stager)
-    command = ('alien-token-init '+alien_user+'')
-    run_shell_cmd(command)
+    # check if there is a valid token
+    logger.debug("Check for valid token...")
+    command = ('alien-token-info '+alien_user+'')
+    proc = Popen(command, stdout=PIPE, stderr=PIPE, shell=True)
+    out,err= proc.communicate()
+    valid=False
+    for outline in out.splitlines():       
+       if 'Token is still valid!' in outline:
+          valid=True 
+    if not valid:
+       logger.info("No valid token found, requesting a new one...")
+       # get token, shoud be done with passwordless certificate
+       command = ('alien-token-init '+alien_user+'')
+       run_shell_cmd(command)
     # query the AliEn catalogue
     logger.info("Querying the AliEn catalogue...") 
     command = ('alien_whereis '+lfn+'') 
