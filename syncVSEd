@@ -31,11 +31,12 @@ if [ `whoami` == 'vseadmin' ] ; then
    export path_to_daemon="/home/vseadmin/syncVSEd"
    export config_file="/home/vseadmin/syncVSEd/syncVSEd.cfg"
    export log_level="DEBUG"
+   source /cvmfs/alice.cern.ch/etc/login.sh && eval $( alienv printenv VO_ALICE@ROOT::v5-34-13 )
 else
    echo "Should run as user vseadmin!"
    exit 1
 fi
-e
+
 case "$1" in
   start)
     echo -e "${green}Starting server...${nc}"
