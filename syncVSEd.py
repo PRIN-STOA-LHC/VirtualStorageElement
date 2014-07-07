@@ -18,8 +18,6 @@
 # To kick off the script, run the following from the python directory:        #
 # python syncVSE.py start                                                     # 
 #                                                                             #
-# TODO init script                                                            #
-#                                                                             #
 # Mailto: svallero@to.infn.it                                                 #
 #                                                                             #
 ###############################################################################
