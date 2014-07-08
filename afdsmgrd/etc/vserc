@@ -1,0 +1,11 @@
+# Shared storage prefix (on POSIX filesystem)
+export VSE_SHARED_DATA='/vse'
+
+# Storage where to mirror files 
+export VSE_SE='ALICE::Torino::SE'
+
+# Posix path to files in SE
+export VSE_SE_POSIX_BASE='/glfs/alice-xrd/xrootd/' 
+
+# Alien user
+export VSE_USER='svallero'
